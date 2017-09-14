@@ -7,16 +7,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Car Sorting App</title>
 
-        <!-- Dependencies 
+        <!-- Dependencies -->
         <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
         <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
-        -->
+        
 
         <!-- Customer CSS -->
         <link rel="stylesheet" href="/css/styles.css">
 
         <!-- Fallback Dependencies -->
-        <!---->
+        <!--
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css.map">
@@ -25,17 +25,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2">
-        
+        -->
 
     </head>
 
-    <body ng-controller="IndexController as vm">
+    <body ng-controller="IndexController as vm" layout="column">
 
         <md-toolbar>
             <h1 flex>Car Sorting App</h1>
         </md-toolbar>
         
-        <md-tabs class="heightfill">
+        <md-tabs layout="column" flex>
             <md-tab label="Search Cars With Angular ng-repeat Filter">
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
@@ -72,17 +72,28 @@
 
                     <md-list flex>
                         <md-subheader ng-if="vm.cars.length > 0" class="md-no-sticky">
-                            Cars ({{vm.cars.length}})
+                            <div ng-if="filtered.length < vm.cars.length && vm.showlimit > filtered.length">
+                                Showing {{filtered.length}} of {{filtered.length}} Found Cars Matching '{{vm.search}}'
+                            </div>
+                            <div ng-if="filtered.length < vm.cars.length && vm.showlimit < filtered.length">
+                                Showing {{vm.showlimit}} of {{filtered.length}} Found Cars Matching '{{vm.search}}'
+                            </div>
+                            <div ng-if="filtered.length == vm.cars.length">
+                                Showing {{vm.showlimit}} of {{vm.cars.length}} Cars
+                            </div>
                         </md-subheader>
 
                         <h2 ng-if="vm.cars.length == 0">
                             Loading Cars...
                         </h2>
+                        <h3 ng-if="filtered.length == 0 && vm.search != null">
+                            Looks like no cars were foung matching '{{vm.search}}'
+                        </h3>
                         <!-- I used Angular's build in repeater ordering the list by the Make_Name. I also use the ng-repeat filter function to perform the search
                         With the Cars there was an issue with the way they were being ordered because a lot of them had blank spaces in front of them so in the orderBy I 
                         used the JavaScript trim() method to ensure that they are ordered properly. -->
 
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars | orderBy:'Make_Name.trim()':vm.carsorder | filter: vm.search | limitTo:vm.showlimit">
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in filtered = (vm.cars | filter:vm.search) | orderBy:'Make_Name.trim()':vm.carsorder | limitTo:vm.showlimit">
                             <div class="md-list-item-text">
                                 <h3>{{car.Make_Name}}</h3>
                                 <p>Make ID: {{car.Make_ID}}</p>
@@ -93,7 +104,7 @@
             </md-tab>
 
             <md-tab label="Search By Calling Angular Function">
-                <md-content layout="column" class="md-padding heightfill" ng-cloak>
+                <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
                     <p>This method calls a function in the Angular controller which does a search of all the items in the vm.cars array. I am still using Angular to order the list</p>
                     
@@ -104,9 +115,9 @@
                     </p>
 
                     <div layout="row">
-                        <md-input-container flex>
+                        <md-input-container flex class="md-input-has-placeholder">
                             <label>Search</label>
-                            <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)">
+                            <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)" placeholder="Enter A Car Name Here or Type 'All' to see all cars">
                         </md-input-container>
 
                         <md-button class="md-secondary md-primary" ng-if="!vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
@@ -123,14 +134,26 @@
 
                     <md-list flex>
                         <md-subheader ng-if="vm.cars2.length > 0">
-                            Cars ({{vm.cars2.length}})
+                            <div ng-if="vm.showlimit < vm.cars2.length && vm.cars2.length != vm.cars.length">
+                                Showing {{vm.showlimit}} of {{vm.cars2.length}} Found Cars Matching '{{vm.keysearch}}'
+                            </div>
+                            <div ng-if="vm.showlimit > vm.cars2.length && vm.cars2.length != vm.cars.length">
+                                Showing {{vm.cars2.length}} of {{vm.cars2.length}} Found Cars Matching '{{vm.keysearch}}'
+                            </div>
+                            <div ng-if="vm.cars2.length == vm.cars.length">
+                                Showing {{vm.showlimit}} of {{vm.cars2.length}} Cars
+                            </div>
                         </md-subheader>
 
-                        <h2 ng-if="vm.cars2.length == 0">
-                            Type in the search box to start filtering through a list of cars
+                        <h2 ng-if="vm.cars2.length == 0 && vm.keysearch == null || vm.keysearch == ''">
+                            Start your car search
                         </h2>
+
+                        <h3 ng-if="vm.cars2.length == 0 && vm.keysearch != null && vm.keysearch != ''">
+                                Looks like no cars were foung matching '{{vm.keysearch}}'
+                        </h3>
                         <!-- This example maintains the alphabetical order with the orderBy function even when searching -->
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars2 | orderBy:'Make_Name.trim()':vm.cars2order track by $index">
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars2 | orderBy:'Make_Name.trim()':vm.cars2order | limitTo:vm.showlimit track by $index">
                             <div class="md-list-item-text">
                                 <h3>{{car.Make_Name}}</h3>
                                 <p>Make ID: {{car.Make_ID}}</p>
@@ -141,7 +164,7 @@
             </md-tab>
 
             <md-tab label="Search All Items From A BackEnd Function">
-                <md-content layout="column" class="md-padding heightfill" ng-cloak>
+                <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
                     <p>
                         This method displays all items much faster by using an infinite scroll mechanism.
@@ -155,9 +178,9 @@
                     </p>
 
                     <div layout="row">
-                        <md-input-container flex>
+                        <md-input-container flex class="md-input-has-placeholder">
                             <label>Search</label>
-                            <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)">
+                            <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)" placeholder="Enter A Car Name Here or Type 'All' to see all cars">
                         </md-input-container>
                         <md-button class="md-secondary md-primary" ng-if="!vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
                             <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
@@ -173,14 +196,25 @@
 
                     <md-list flex>
                         <md-subheader ng-if="vm.cars3.length > 0">
-                            Cars ({{vm.cars2.length}})
+                            <div ng-if="vm.showlimit < vm.cars3.length && vm.cars3.length != vm.cars.length">
+                                Showing {{vm.showlimit}} of {{vm.cars3.length}} Found Cars Matching '{{vm.keysearch2}}'
+                            </div>
+                            <div ng-if="vm.showlimit > vm.cars3.length && vm.cars3.length != vm.cars.length">
+                                Showing {{vm.cars3.length}} of {{vm.cars3.length}} Found Cars Matching '{{vm.keysearch2}}'
+                            </div>
+                            <div ng-if="vm.cars3.length == vm.cars.length">
+                                Showing {{vm.showlimit}} of {{vm.cars3.length}} Cars
+                            </div>
                         </md-subheader>
 
-                        <h2 ng-if="vm.cars3.length == 0">
-                            Type in the search box to start filtering through a list of cars
+                        <h2 ng-if="vm.cars3.length == 0 && vm.keysearch2 == null || vm.keysearch2 == ''">
+                            Start your car search
                         </h2>
+                        <h3 ng-if="vm.cars3.length == 0 && vm.keysearch2 != null && vm.keysearch2 != ''">
+                            Looks like no cars were foung matching '{{vm.keysearch2}}'
+                        </h3>
 
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars3 | orderBy:'Make_Name.trim()':vm.cars3order track by $index">
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars3 | orderBy:'Make_Name.trim()':vm.cars3order | limitTo:vm.showlimit track by $index">
                                 <div class="md-list-item-text">
                                     <h3>{{car.Make_Name}}</h3>
                                     <p>Make ID: {{car.Make_ID}}</p>
@@ -193,24 +227,24 @@
         </md-tabs>
 
 
-        <!-- Dependencies 
+        <!-- Dependencies -->
         <script src="/bower_components/angular/angular.min.js"></script>
         <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
         <script src="/bower_components/angular-aria/angular-aria.min.js"></script>
         <script src="/bower_components/angular-messages/angular-messages.min.js"></script>
         <script src="/bower_components/angular-material/angular-material.min.js"></script>
         <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-        -->
+        
         
         <!-- Fallback Dependencies If Bower Components Fails -->
-        <!---->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+        <!--
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular-animate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.6/angular-aria.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.6.6/angular-messages.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
         <script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
-        
+        -->
 
         <!-- Custom Scripts -->
         <script src="/js/index.module.js"></script>
