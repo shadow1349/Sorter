@@ -9,6 +9,7 @@
 
         <!-- Dependencies -->
         <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+        <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
 
         <!-- Customer CSS -->
         <link rel="stylesheet" href="/css/styles.css">
@@ -16,7 +17,15 @@
         <!-- Fallback Dependencies -->
         <!--
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css.map">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2">
         -->
+
     </head>
 
     <body ng-controller="IndexController as vm">
@@ -27,12 +36,12 @@
         
         <md-tabs class="heightfill">
             <md-tab label="Search Cars With Angular ng-repeat Filter">
-                <md-content layout="column" class="md-padding heightfill" ng-cloak>
+                <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
                     <p>
                         This method uses Angular to do the ordering and searching of all cars. 
-                        It starts by displaying all cars (This will render slowly because it is trying to display the whole list at 
-                        once there is a faster demo on the 3rd tab).
+                        It starts by displaying all cars. Usually rendering 6000+ items at once would run slowly so I implemented
+                        an infinite scrolling feature to make this run faster.
                     </p>
                     <p>
                         This uses Angular ng-repeat to display all the items. In the ng-repeat I have <code>orderBy: 'Make_Name.trim()'</code>,
@@ -44,13 +53,24 @@
                         which will filter the list down to items only containing the query string that is typed into the top search bar.
                     </p>
 
-                    <md-input-container>
-                        <label>Search</label>
-                        <input type="text" ng-model="vm.search">
-                    </md-input-container>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Search</label>
+                            <input type="text" ng-model="vm.search">
+                        </md-input-container>
+                        <md-button class="md-secondary" ng-if="!vm.carsorder" ng-click="vm.reverseorder(1)">
+                            <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
+                        </md-button>
+                        <md-button class="md-secondary" ng-if="vm.carsorder" ng-click="vm.reverseorder(1)">
+                            <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
+                        </md-button>
+                    </div>
+
 
                     <md-list flex>
-                        <md-subheader ng-if="vm.cars.length > 0">
+                        <md-subheader ng-if="vm.cars.length > 0" class="md-no-sticky">
                             Cars ({{vm.cars.length}})
                         </md-subheader>
 
@@ -60,7 +80,8 @@
                         <!-- I used Angular's build in repeater ordering the list by the Make_Name. I also use the ng-repeat filter function to perform the search
                         With the Cars there was an issue with the way they were being ordered because a lot of them had blank spaces in front of them so in the orderBy I 
                         used the JavaScript trim() method to ensure that they are ordered properly. -->
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars | orderBy:'Make_Name.trim()' | filter: vm.search">
+
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars | orderBy:'Make_Name.trim()':vm.carsorder | filter: vm.search | limitTo:vm.showlimit">
                             <div class="md-list-item-text">
                                 <h3>{{car.Make_Name}}</h3>
                                 <p>Make ID: {{car.Make_ID}}</p>
@@ -81,10 +102,22 @@
                         I do the .toLowerCase() method to make sure that searching is case insensitive so that we pull back all relevant results.
                     </p>
 
-                    <md-input-container>
-                        <label>Search</label>
-                        <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)">
-                    </md-input-container>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Search</label>
+                            <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)">
+                        </md-input-container>
+
+                        <md-button class="md-secondary" ng-if="!vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
+                            <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
+                        </md-button>
+                        <md-button class="md-secondary" ng-if="vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
+                            <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
+                        </md-button>
+                    </div>
+
 
 
                     <md-list flex>
@@ -96,7 +129,7 @@
                             Type in the search box to start filtering through a list of cars
                         </h2>
                         <!-- This example maintains the alphabetical order with the orderBy function even when searching -->
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars2 | orderBy:'Make_Name.trim()' track by $index">
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars2 | orderBy:'Make_Name.trim()':vm.cars2order track by $index">
                             <div class="md-list-item-text">
                                 <h3>{{car.Make_Name}}</h3>
                                 <p>Make ID: {{car.Make_ID}}</p>
@@ -120,10 +153,21 @@
                         To do the searching on this example I call a backend HTTP POST function that sorts through the list pulled down from the API.
                     </p>
 
-                    <md-input-container>
-                        <label>Search</label>
-                        <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)">
-                    </md-input-container>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Search</label>
+                            <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)">
+                        </md-input-container>
+                        <md-button class="md-secondary" ng-if="!vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
+                            <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
+                        </md-button>
+                        <md-button class="md-secondary" ng-if="vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
+                            <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
+                            <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
+                        </md-button>
+                    </div>
+
 
 
                     <md-list flex>
@@ -135,7 +179,7 @@
                             Type in the search box to start filtering through a list of cars
                         </h2>
 
-                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars3 | orderBy:'Make_Name.trim()' track by $index">
+                        <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars3 | orderBy:'Make_Name.trim()':vm.cars3order track by $index">
                                 <div class="md-list-item-text">
                                     <h3>{{car.Make_Name}}</h3>
                                     <p>Make ID: {{car.Make_ID}}</p>

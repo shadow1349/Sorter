@@ -1,7 +1,7 @@
 var express = require("express"),
     app = express(),
     server = require('http').createServer(app),
-    //We need this module to call the https api
+    //This module will help call REST services
     node_rest = require('node-rest-client').Client,
     port = process.env.PORT || 8080,
     bodyParser = require('body-parser'),
@@ -24,7 +24,7 @@ var options = {
     method: 'GET'
 }
 
-//This will help me store variables in a session
+//This will help me store variables in the session
 app.use(
     session({
         secret: 'nodesorter',
@@ -38,6 +38,7 @@ app.use(
 app.use('/', express.static(__dirname));
 
 //Make sure that the app is using body parser for sending JSON objects back and forth
+//While this isn't necessary, it makes life a lot easier when we want to send/receive JSON data
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
@@ -72,13 +73,6 @@ app.post('/search', function(req, res) {
         });
     }
 });
-
-function CleanData(arr, callback) {
-    arr.forEach(function(car, idx) {
-        arr[i] = car.trim();
-    });
-    callback(arr);
-}
 
 
 //App Will Start To Server index.html
