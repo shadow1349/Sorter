@@ -58,11 +58,11 @@
                             <label>Search</label>
                             <input type="text" ng-model="vm.search">
                         </md-input-container>
-                        <md-button class="md-secondary" ng-if="!vm.carsorder" ng-click="vm.reverseorder(1)">
+                        <md-button class="md-secondary md-primary" ng-if="!vm.carsorder" ng-click="vm.reverseorder(1)">
                             <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
                         </md-button>
-                        <md-button class="md-secondary" ng-if="vm.carsorder" ng-click="vm.reverseorder(1)">
+                        <md-button class="md-secondary md-primary" ng-if="vm.carsorder" ng-click="vm.reverseorder(1)">
                             <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
                         </md-button>
@@ -108,11 +108,11 @@
                             <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)">
                         </md-input-container>
 
-                        <md-button class="md-secondary" ng-if="!vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
+                        <md-button class="md-secondary md-primary" ng-if="!vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
                             <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
                         </md-button>
-                        <md-button class="md-secondary" ng-if="vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
+                        <md-button class="md-secondary md-primary" ng-if="vm.cars2order" ng-click="vm.reverseorder(2)" ng-disabled="vm.cars2.length == 0">
                             <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
                         </md-button>
@@ -158,11 +158,11 @@
                             <label>Search</label>
                             <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)">
                         </md-input-container>
-                        <md-button class="md-secondary" ng-if="!vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
+                        <md-button class="md-secondary md-primary" ng-if="!vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
                             <md-tooltip>Click Me To Sort The List From Z - A</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-asc"></md-icon>    
                         </md-button>
-                        <md-button class="md-secondary" ng-if="vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
+                        <md-button class="md-secondary md-primary" ng-if="vm.cars3order" ng-click="vm.reverseorder(3)" ng-disabled="vm.cars3.length == 0">
                             <md-tooltip>Click Me To Sort The List From A - Z</md-tooltip>
                             <md-icon class="fa icon" md-font-icon="fa-sort-alpha-desc"></md-icon>  
                         </md-button>

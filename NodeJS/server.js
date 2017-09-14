@@ -55,7 +55,7 @@ app.get('/getAllItems', function(req, res) {
     });
 });
 
-
+//This will be called numerous times while the user is typing
 app.post('/search', function(req, res) {
     //I used a try catch here to make sure that if the session gets destroyed we can re-pull the data and save it in the session
     try
