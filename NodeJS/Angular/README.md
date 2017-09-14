@@ -1,4 +1,4 @@
-## NodeJS Angular Sorter ##
+## NodeJS/Angular Sorter ##
 This project requires npm and bower in order to run 
 
 To install dependencies run
