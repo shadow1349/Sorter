@@ -30,6 +30,9 @@ angular.module('sorter', [
     return {
         GetAllItems : function() {
             return $http.get('/getAllItems');
+        },
+        Search: function(query) {
+            return $http.post('/search', { query: query });
         }
     }
 }]);
