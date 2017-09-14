@@ -1,0 +1,23 @@
+{
+  "name": "angular",
+  "version": "1.0.0",
+  "description": "This project pulls in data from a public api and offers users options to sort and search the data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shadow1349/Sorter.git"
+  },
+  "author": "Sam Redmond",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shadow1349/Sorter/issues"
+  },
+  "homepage": "https://github.com/shadow1349/Sorter#readme",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4"
+  }
+}
