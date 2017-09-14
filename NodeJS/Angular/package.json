@@ -18,6 +18,7 @@
   "homepage": "https://github.com/shadow1349/Sorter#readme",
   "dependencies": {
     "body-parser": "^1.18.1",
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "node-rest-client": "^3.1.0"
   }
 }

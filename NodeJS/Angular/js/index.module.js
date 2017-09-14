@@ -29,7 +29,7 @@ angular.module('sorter', [
 .factory('Sorter', ['$http', function($http) {
     return {
         GetAllItems : function() {
-            return $http.get('getAllItems');
+            return $http.get('/getAllItems');
         }
     }
 }]);

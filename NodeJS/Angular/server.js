@@ -2,17 +2,17 @@ var express = require("express"),
     app = express(),
     server = require('http').createServer(app),
     //We need this module to call the https api
-    https = require('https'),
+    node_rest = require('node-rest-client').Client,
     port = process.env.PORT || 8080,
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    client = new node_rest();
 
 //api_endpoint = 'https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json';
 //API Information
 var options = {
-    host: 'https://vpic.nhtsa.dot.gov/',
-    port: 443,
+    host: 'https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json',
     path: '/api/vehicles/getallmakes?format=json',
-    method: 'POST'
+    method: 'GET'
 }
 
 //Make sure that we can access the directory / from the front end
@@ -22,20 +22,14 @@ app.use('/', express.static(__dirname));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-//This function will sort using a callback
-function sortcallback(arr, callback) {
-
-}
-
-//This function will asynchronous sort 
-function sortreturn(arr) {
-
-}
 
 //This route will return all the items from the public api
 app.get('/getAllItems', function(req, res) {
-    https.request(options, function(response) {
-        console.log(response);
+    client.get('https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json',function(data, response) {
+        //At this point we have an unordered list of cars
+        console.log(data);
+        res.json(data);
+        
     });
 });
 

@@ -19,9 +19,34 @@
     <body ng-controller="IndexController as vm">
 
         <md-toolbar>
-            <h1>Sorting App</h1>
+            <h1 flex>Sorting App</h1>
+            <div layout="row" style="background-color:white">
+                <md-input-container flex>
+                    <label>Search</label>
+                    <input type="text" ng-model="vm.search">
+                </md-input-container>
+            </div>
         </md-toolbar>
         
+        <md-content layout="row" class="md-padding" ng-cloak>
+            <md-list flex>
+                <md-subheader ng-if="vm.cars.length > 0">
+                    Cars ({{vm.cars.length}})
+                </md-subheader>
+
+                <h2 ng-if="vm.cars.length == 0">
+                    Loading Cars...
+                </h2>
+
+                <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars | orderBy:'Make_Name.toString()' | filter: vm.search">
+                    <div class="md-list-item-text">
+                        <h3>{{car.Make_Name}}</h3>
+                        <p>Make ID: {{car.Make_ID}}</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+
         <!-- Dependencies -->
         <script src="/bower_components/angular/angular.min.js"></script>
         <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
