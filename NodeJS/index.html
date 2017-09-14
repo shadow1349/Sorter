@@ -32,25 +32,32 @@
     <body ng-controller="IndexController as vm" layout="column">
 
         <md-toolbar>
-            <h1 flex>Car Sorting App</h1>
+            <h1 flex id="top">Car Sorting App</h1>
         </md-toolbar>
         
         <md-tabs layout="column" flex>
-            <md-tab label="Search Cars With Angular ng-repeat Filter">
+            <md-tab label="Search 1">
+
+                <md-button class="md-fab" ng-click="vm.scrolltop()">
+                    <md-tooltip>Scoll To The Top</md-tooltip>
+                    <md-icon class="fa icon" md-font-icon="fa-angle-up"></md-icon>
+                </md-button>
+
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
+                    <h1>Search Cars With Angular ng-repeat Filter</h1>
                     <p>
                         This method uses Angular to do the ordering and searching of all cars. 
-                        It starts by displaying all cars. Usually rendering 6000+ items at once would run slowly so I implemented
+                        It starts by displaying all cars. Usually rendering 6000+ items at once would run slowly so I implemented 
                         an infinite scrolling feature to make this run faster.
                     </p>
                     <p>
-                        This uses Angular ng-repeat to display all the items. In the ng-repeat I have <code>orderBy: 'Make_Name.trim()'</code>,
+                        This uses Angular ng-repeat to display all the items. In the ng-repeat I have <code>orderBy: 'Make_Name.trim()'</code>, 
                         which will order the list alphabetically by the Make_Name property. The reason I use the trim() method is because 
                         some of the names have white space in front which will make the ordering wrong. i.e. ' Jeep' would come before 'Aston Martin'
                     </p>
                     <p>
-                        To do the searching I use the ng-repeat filter method (which is not a true search, that is in the second tab)<code>filter: vm.search</code>
+                        To do the searching I use the ng-repeat filter method (which is not a true search, that is in the second tab) <code>filter: vm.search</code> 
                         which will filter the list down to items only containing the query string that is typed into the top search bar.
                     </p>
 
@@ -73,10 +80,10 @@
                     <md-list flex>
                         <md-subheader ng-if="vm.cars.length > 0" class="md-no-sticky">
                             <div ng-if="filtered.length < vm.cars.length && vm.showlimit > filtered.length">
-                                Showing {{filtered.length}} of {{filtered.length}} Found Cars Matching '{{vm.search}}'
+                                Showing {{filtered.length}} of {{filtered.length}} Cars Matching '{{vm.search}}'
                             </div>
                             <div ng-if="filtered.length < vm.cars.length && vm.showlimit < filtered.length">
-                                Showing {{vm.showlimit}} of {{filtered.length}} Found Cars Matching '{{vm.search}}'
+                                Showing {{vm.showlimit}} of {{filtered.length}} Cars Matching '{{vm.search}}'
                             </div>
                             <div ng-if="filtered.length == vm.cars.length">
                                 Showing {{vm.showlimit}} of {{vm.cars.length}} Cars
@@ -100,18 +107,27 @@
                             </div>
                         </md-list-item>
                     </md-list>
+
+                    <smoothscroll></smoothscroll>
                 </md-content>
             </md-tab>
 
-            <md-tab label="Search By Calling Angular Function">
+            <md-tab label="Search 2">
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
+
+                    <h1>Search By Calling Angular Function</h1>
 
                     <p>This method calls a function in the Angular controller which does a search of all the items in the vm.cars array. I am still using Angular to order the list</p>
                     
                     <p>
                         I created an Array.prototype method called Search which will call Array.prototype.filter on the vm.cars 
-                        array (which contains all the available cars) and return all values where <code>Make_Name.toLowerCase().includes(query.toLowerCase())</code>
+                        array (which contains all the available cars) and return all values where <code>Make_Name.toLowerCase().includes(query.toLowerCase())</code> 
                         I do the .toLowerCase() method to make sure that searching is case insensitive so that we pull back all relevant results.
+                    </p>
+
+                    <p>
+                        This has also been adapted to use the same infinite scrolling capability as the first search function when we start dealing with larger lists 
+                        or if a user wants to search for all cars
                     </p>
 
                     <div layout="row">
@@ -135,10 +151,10 @@
                     <md-list flex>
                         <md-subheader ng-if="vm.cars2.length > 0">
                             <div ng-if="vm.showlimit < vm.cars2.length && vm.cars2.length != vm.cars.length">
-                                Showing {{vm.showlimit}} of {{vm.cars2.length}} Found Cars Matching '{{vm.keysearch}}'
+                                Showing {{vm.showlimit}} of {{vm.cars2.length}} Cars Matching '{{vm.keysearch}}'
                             </div>
                             <div ng-if="vm.showlimit > vm.cars2.length && vm.cars2.length != vm.cars.length">
-                                Showing {{vm.cars2.length}} of {{vm.cars2.length}} Found Cars Matching '{{vm.keysearch}}'
+                                Showing {{vm.cars2.length}} of {{vm.cars2.length}} Cars Matching '{{vm.keysearch}}'
                             </div>
                             <div ng-if="vm.cars2.length == vm.cars.length">
                                 Showing {{vm.showlimit}} of {{vm.cars2.length}} Cars
@@ -163,18 +179,25 @@
                 </md-content>
             </md-tab>
 
-            <md-tab label="Search All Items From A BackEnd Function">
+            <md-tab label="Search 3">
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
 
+                    <h1>Search All Items From A BackEnd Function</h1>
+
                     <p>
-                        This method displays all items much faster by using an infinite scroll mechanism.
-                        Rather than displaying all items at once (like the first method) it only displays a few items at a time
-                        until you scroll to the bottom of the page, then more items will be displayed from the list.
+                        This method displays all items much faster by using an infinite scroll mechanism. 
+                        Rather than displaying all items at once (like the first method) it only displays a few items at a time 
+                        until you scroll to the bottom of the page, then more items will be displayed from the list. 
                         I am still using Angular to order the list
                     </p>
                     
                     <p>
                         To do the searching on this example I call a backend HTTP POST function that sorts through the list pulled down from the API.
+                    </p>
+
+                    <p>
+                        This has also been adapted to use the same infinite scrolling capability as the first search function when we start dealing with larger lists 
+                        or if a user wants to search for all cars
                     </p>
 
                     <div layout="row">
@@ -197,10 +220,10 @@
                     <md-list flex>
                         <md-subheader ng-if="vm.cars3.length > 0">
                             <div ng-if="vm.showlimit < vm.cars3.length && vm.cars3.length != vm.cars.length">
-                                Showing {{vm.showlimit}} of {{vm.cars3.length}} Found Cars Matching '{{vm.keysearch2}}'
+                                Showing {{vm.showlimit}} of {{vm.cars3.length}} Cars Matching '{{vm.keysearch2}}'
                             </div>
                             <div ng-if="vm.showlimit > vm.cars3.length && vm.cars3.length != vm.cars.length">
-                                Showing {{vm.cars3.length}} of {{vm.cars3.length}} Found Cars Matching '{{vm.keysearch2}}'
+                                Showing {{vm.cars3.length}} of {{vm.cars3.length}} Cars Matching '{{vm.keysearch2}}'
                             </div>
                             <div ng-if="vm.cars3.length == vm.cars.length">
                                 Showing {{vm.showlimit}} of {{vm.cars3.length}} Cars
