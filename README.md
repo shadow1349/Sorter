@@ -43,3 +43,4 @@ I chose to use NodeJS with AngularJS because they both parse JSON objects native
 I also chose to use Angular Material because the framework works with Angular and provides additional ease of use like configuring a theme (app colors) and components like tabs and styled lists.
 
 I chose to use the Font Awesome icons rather than the Angular Material icons because they offer a much larger variety of icons and I needed an icon that shows lists A-Z and Z-A.
+
