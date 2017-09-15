@@ -30,21 +30,14 @@
     </head>
 
     <body ng-controller="IndexController as vm" layout="column">
-
         <md-toolbar>
-            <h1 flex id="top">Car Sorting App</h1>
+            <h1 flex>Car Sorting App</h1>
         </md-toolbar>
         
         <md-tabs layout="column" flex>
             <md-tab label="Search 1">
-
-                <md-button class="md-fab" ng-click="vm.scrolltop()">
-                    <md-tooltip>Scoll To The Top</md-tooltip>
-                    <md-icon class="fa icon" md-font-icon="fa-angle-up"></md-icon>
-                </md-button>
-
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
-
+                    <a href="#top1" name="topanchor" id="top1"></a>
                     <h1>Search Cars With Angular ng-repeat Filter</h1>
                     <p>
                         This method uses Angular to do the ordering and searching of all cars. 
@@ -61,7 +54,7 @@
                         which will filter the list down to items only containing the query string that is typed into the top search bar.
                     </p>
 
-                    <div layout="row">
+                    <div layout="row" class="searchfield">
                         <md-input-container flex>
                             <label>Search</label>
                             <input type="text" ng-model="vm.search">
@@ -108,13 +101,16 @@
                         </md-list-item>
                     </md-list>
 
-                    <smoothscroll></smoothscroll>
                 </md-content>
+                <md-button class="md-accent md-fab md-fab-bottom-right hide" ng-click="vm.scrolltop('top1')">
+                    <md-tooltip md-direction="top">Click Me To Get Back To The Top</md-tooltip>
+                    <md-icon md-font-icon="fa-angle-up" class="fa icon"></md-icon>
+                </md-button>
             </md-tab>
 
             <md-tab label="Search 2">
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
-
+                    <a href="#top2" name="topanchor" id="top2"></a>
                     <h1>Search By Calling Angular Function</h1>
 
                     <p>This method calls a function in the Angular controller which does a search of all the items in the vm.cars array. I am still using Angular to order the list</p>
@@ -130,7 +126,7 @@
                         or if a user wants to search for all cars
                     </p>
 
-                    <div layout="row">
+                    <div layout="row" class="searchfield">
                         <md-input-container flex class="md-input-has-placeholder">
                             <label>Search</label>
                             <input type="text" ng-model="vm.keysearch" ng-keyup="vm.search1(vm.keysearch)" placeholder="Enter A Car Name Here or Type 'All' to see all cars">
@@ -149,7 +145,7 @@
 
 
                     <md-list flex>
-                        <md-subheader ng-if="vm.cars2.length > 0">
+                        <md-subheader ng-if="vm.cars2.length > 0" class="md-no-sticky">
                             <div ng-if="vm.showlimit < vm.cars2.length && vm.cars2.length != vm.cars.length">
                                 Showing {{vm.showlimit}} of {{vm.cars2.length}} Cars Matching '{{vm.keysearch}}'
                             </div>
@@ -177,11 +173,16 @@
                         </md-list-item>
                     </md-list>
                 </md-content>
+                <md-button class="md-accent md-fab md-fab-bottom-right hide" ng-click="vm.scrolltop('top2')">
+                    <md-tooltip md-direction="top">Click Me To Get Back To The Top</md-tooltip>
+                    <md-icon md-font-icon="fa-angle-up" class="fa icon"></md-icon>
+                </md-button>
             </md-tab>
 
             <md-tab label="Search 3">
+                
                 <md-content layout="column" class="md-padding heightfill" ng-cloak infinitescroll="vm.loadmore()">
-
+                    <a href="#top3" name="topanchor" id="top3"></a>
                     <h1>Search All Items From A BackEnd Function</h1>
 
                     <p>
@@ -200,7 +201,7 @@
                         or if a user wants to search for all cars
                     </p>
 
-                    <div layout="row">
+                    <div layout="row" class="searchfield">
                         <md-input-container flex class="md-input-has-placeholder">
                             <label>Search</label>
                             <input type="text" ng-model="vm.keysearch2" ng-keyup="vm.search2(vm.keysearch2)" placeholder="Enter A Car Name Here or Type 'All' to see all cars">
@@ -218,7 +219,7 @@
 
 
                     <md-list flex>
-                        <md-subheader ng-if="vm.cars3.length > 0">
+                        <md-subheader ng-if="vm.cars3.length > 0" class="md-no-sticky">
                             <div ng-if="vm.showlimit < vm.cars3.length && vm.cars3.length != vm.cars.length">
                                 Showing {{vm.showlimit}} of {{vm.cars3.length}} Cars Matching '{{vm.keysearch2}}'
                             </div>
@@ -238,14 +239,18 @@
                         </h3>
 
                         <md-list-item class="md-3-line md-whiteframe-5dp" ng-repeat="car in vm.cars3 | orderBy:'Make_Name.trim()':vm.cars3order | limitTo:vm.showlimit track by $index">
-                                <div class="md-list-item-text">
-                                    <h3>{{car.Make_Name}}</h3>
-                                    <p>Make ID: {{car.Make_ID}}</p>
-                                </div>
-                            </md-list-item>
+                            <div class="md-list-item-text">
+                                <h3>{{car.Make_Name}}</h3>
+                                <p>Make ID: {{car.Make_ID}}</p>
+                            </div>
+                        </md-list-item>
 
                     </md-list>
                 </md-content>
+                <md-button class="md-accent md-fab md-fab-bottom-right hide" ng-click="vm.scrolltop('top3')">
+                    <md-tooltip md-direction="top">Click Me To Get Back To The Top</md-tooltip>
+                    <md-icon md-font-icon="fa-angle-up" class="fa icon"></md-icon>
+                </md-button>
             </md-tab>
         </md-tabs>
 
