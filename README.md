@@ -33,7 +33,7 @@ All of these method rely on the angular orderBy filter in the ng-repeat method t
 ----------
 
 
-## Method Behind The Madness##
+## Method Behind The Madness ##
 
 I chose to use NodeJS with AngularJS because they both parse JSON objects natively so I don't have to convert to JSON, which would take additional resource and take longer.
 
